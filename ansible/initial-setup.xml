@@ -1,0 +1,83 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Update all packages
+      apt:
+        name: "*"
+        state: latest
+
+    - name: Install protonvpn repo
+      apt:
+        deb: "https://repo.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.8_all.deb"
+
+    - name: Add cloudflare signing key
+      apt_key:
+        url: https://pkg.cloudflare.com/cloudflare-main.gpg
+        state: present
+
+    - name: Add cloudflare repository
+      apt_repository:
+        repo: deb https://pkg.cloudflare.com/cloudflared noble main
+        state: present
+
+    - name: Add brave browsers signing key
+      apt_key:
+        url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+        state: present
+
+    - name: Add brave browser repository
+      apt_repository:
+        repo: deb https://brave-browser-apt-release.s3.brave.com stable main
+        state: present
+
+    - name: Add eternal terminal (et) PPS repository
+      apt_repository:
+        repo: ppa:jgmath2000/et
+        state: present
+
+    - name: add prompt script
+      copy:
+        src: prompt.sh
+        dest: /etc/profile.d/prompt.sh
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: add aliases script
+      copy:
+        src: aliases.sh
+        dest: /etc/profile.d/aliases.sh
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: add environment script
+      copy:
+        src: environment.sh
+        dest: /etc/profile.d/environment.sh
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Install /etc/hosts file
+      copy:
+        src: hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Install flatpak
+      apt:
+        name: flatpak-builder
+
+    - name: Add the flathub flatpak repository remote to the user installation
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        method: system
+
+
+

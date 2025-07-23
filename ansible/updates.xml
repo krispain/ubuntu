@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Update all pacakges
+      apt:
+        name: "*"
+        state: latest
+      register: result
+    - name: Show updated packages
+      when: result is changed
+      debug: msg="{{ result.results }}"
+
+    - name: Upgrade all flatpaks
+      ansible.builtin.command: 
+        flatpak update --noninteractive
+      register: result
+      changed_when: "'Nothing to do' not in result.stdout"
+    - name: Show updated flatpaks
+      when: result is changed
+      debug: msg="{{ result.stdout_lines }}"
+

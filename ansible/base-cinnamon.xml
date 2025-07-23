@@ -1,0 +1,95 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Install some packages
+      apt:
+        name: |
+          brave-browser,
+          shotwell,
+          libreoffice,
+          cups,
+          simple-scan,
+          atril,
+          ifuse,
+          libimobiledevice-utils,
+          usbmuxd,
+          mate-terminal,
+          neofetch,
+          nethogs,
+          htop,
+          ncdu,
+          et,
+          adb,
+          fastboot,
+          tigervnc-viewer,
+          docker-compose,
+          virt-manager,
+          guestfs-tools,
+          mosh,
+          rclone,
+          nmap,
+          meld,
+          openvpn,
+          gparted,
+          gimp,
+          flameshot,
+          mate-utils,
+          eom,
+          audacity,
+          sox,
+          vlc,
+          mplayer,
+          yt-dlp,
+          id3v2,
+          lame,
+          id3tool,
+          mp3gain,
+          pavucontrol,
+          pulseaudio-utils,
+          proton-vpn-gnome-desktop,
+          wireguard-tools,
+          qbittorrent,
+          cinnamon,
+          normalize-audio,
+          nextcloud-desktop,
+          icedtea-netx,
+          fzf,
+          bat,
+          fd-find,
+          smem,
+          glmark2,
+          x2goclient,
+          goverlay
+
+    - name: Remove some packages
+      apt:
+        name: |
+          chromium,
+          firefox,
+          thunderbird,
+          thunderbird-librnp-rnp,
+          gnome-terminal,
+          xawtv,
+          mpv,
+          xfburn,
+          pidgin,
+          transmission,
+          hexchat,
+          malcontent-control
+        state: absent
+
+    - name: Install flatpak packages
+      community.general.flatpak:
+        name:
+          - com.slack.Slack
+          - com.bitwarden.desktop
+          - org.signal.Signal
+          - org.telegram.desktop
+
+    - name: Install linphone appimage
+      ansible.builtin.get_url:
+        url: https://linphone.org/releases/linux/latest_app
+        dest: /usr/local/bin/linphone
+        mode: '0755'
+
