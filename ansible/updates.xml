@@ -20,3 +20,9 @@
       when: result is changed
       debug: msg="{{ result.stdout_lines }}"
 
+    - name: Update linphone appimage
+      ansible.builtin.get_url:
+        url: https://linphone.org/releases/linux/latest_app
+        dest: /usr/local/bin/linphone
+        mode: '0755'
+
