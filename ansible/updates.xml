@@ -5,6 +5,7 @@
     - name: Update all pacakges
       apt:
         name: "*"
+        update_cache: true
         state: latest
       register: result
     - name: Show updated packages
